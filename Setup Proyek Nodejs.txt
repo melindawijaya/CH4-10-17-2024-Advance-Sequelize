@@ -1,0 +1,120 @@
+1. create directory untuk project nya
+
+// initialisasi node js project nya, install package2 yg digunakan d project nya
+2. npm init 
+3. Buat file www di folder bin
+// kalau start aplikasi dari bin/www
+// isinya 
+const app = require("../server");
+
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => {
+    console.log(`server running in PORT ${PORT}`);
+})
+4. configurasi package.json, di script tambahin
+   "start":"node -r dotenv/config bin/www",
+   "dev":"nodemon -r dotenv/config bin/www". 
+5. npm install express morgan nodemon dotenv sequelize sequelize-cli pg pg-hstore
+6. set express di server.js
+const express = require ("express");
+const morgan = require ("morgan");
+
+const app = express();
+
+module.exports = app;
+7. Tambahkan healthcheck di server.js
+app.get("/api/v1/healthcheck", async (req,res) => {
+    try {
+        res.status(200).json({
+            status: "Success",
+            message: "Application passed healthcheck",
+            isSuccess: true
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: "Failed",
+            message: "Application failed healthcheck",
+            isSuccess: false
+        })
+    }
+})
+
+//Buat database diagram di dbdiagram.io
+8. sequelize init, npm install sequelize-cli, setelah itu npx sequelize-cli init
+9. sequelize model:generate --name product --attributes name:string,price:float,stock:integer 
+contoh =  
+sequelize model:generate --name Product --attributes name:string,price:integer,stock:integer
+10. Edit attribut di file pada folfer migrations
+11. Edit isi config.json
+//pada database.js sesuaikan:
+"development": {
+      "username": "root",
+      "password": null,
+      "database": "database_development",
+      "host": "127.0.0.1",
+      "dialect": "mysql"
+    },
+
+contoh:
+"development": {
+      "username": process.env.DB_USERNAME,
+      "password": process.env.DB_PASSWORD,
+      "database": "database_development_fsw2_km7++",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
+    },
+12. konfigurasi koneksi database dengan npx sequelize-cli db:create --config config/database.js
+// sequelize db:create (kalau database yg kita config blm ada) 
+13. sequelize db:migrate 
+
+
+
+// configurasi npm dan DB koneksi
+5. configurasi file database.js di folder config untuk database connection dari sequelize nya (sequelizerc buat configure settingan sequelize-cli)
+6. Isi file .sequelizerc
+const path = require("path")
+module.exports = {
+    'config': path.resolve('config', 'database.js')
+}
+7. npm install dotenv
+8. Ubah isi database.js menjadi require('dotenv').config();
+module.exports = { isi dari config.json }
+//pada database.js sesuaikan:
+"development": {
+      "username": "root",
+      "password": null,
+      "database": "database_development",
+      "host": "127.0.0.1",
+      "dialect": "mysql"
+    },
+
+contoh:
+"development": {
+      "username": process.env.DB_USERNAME,
+      "password": process.env.DB_PASSWORD,
+      "database": "database_development_fsw2_km7++",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
+    },
+//config.json sudah bisa dihapus
+9. buat file .env dan .env-example yang berisi :
+DB_NAME =
+DB_USERNAME =
+DB_PASSWORD =
+DB_HOST = localhost
+DB_PORT = 5432
+
+10. buat file .gitignore yang berisi node_modules .env
+
+// data model dan migration ke database menggunakan sequelize 
+
+13. konfigurasi koneksi database dengan npx sequelize-cli db:create --config config/database.js
+// sequelize db:create (kalau database yg kita config blm ada) 
+
+14. sequelize db:migrate 
+
+// bikin manual folder sesuai MVC
+15. router 
+16. controller
+17. model (kalau gk otomatis ada dari hasil sequelize init)
